@@ -6,6 +6,7 @@ A tactile button lets you arm an alert — when the next 116 bus is within **3 m
 
 Ideal as a small desktop/wall display for commuters.
 
+Watch the Demo here
 [![Watch the demo](https://img.youtube.com/vi/6VLtv4k-_vk/maxresdefault.jpg)](https://www.youtube.com/watch?v=6VLtv4k-_vk)
 
 ---
