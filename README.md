@@ -92,57 +92,45 @@ WIFI_SSID = "your-wifi"
 WIFI_PW   = "your-password"
 API_KEY   = "your-mbta-api-key"
 ```
-▶️ Usage
-Normal Mode
+## ▶️ Usage
 
-Boots up, shows:
+### **Normal Mode**
+On startup, the display shows:
+- 116 next arrival
+- 116 following arrival
+- Blue Line next + following arrivals
+- Updated timestamp on the bottom row
 
-116 next arrival
+---
 
-116 following arrival
-
-Blue Line next + following arrivals
-
-Updated timestamp
-
-Arm Alert
-
+### **Arm Alert**
 Press the button once:
+- Bottom line updates to: `Next bus alert ON`
+- When the next 116 bus is ≤ threshold (default **3 min**):
+  - Buzzer beeps ×5  
+  - Alert automatically resets  
+  - Bottom line returns to timestamp
 
-LCD bottom line → Next bus alert ON
+---
 
-When the next 116 bus is ≤ threshold (default 3 min):
+### **Disarm Alert**
+Press the button again to turn the alert off.
 
-Buzzer beeps ×5
+---
 
-Alert resets
+### **Night Mode**
+Active between **23:00–06:00**:
+- LCD backlight turns off
+- No MBTA API polling
+- Automatically resumes normal operation after 06:00
 
-Bottom line returns to timestamp
+---
 
-Disarm Alert
+## 🧠 How It Works (Internal Logic)
 
-Press the button again.
-
-Night Mode
-
-Between 23:00–06:00:
-
-Backlight turns off
-
-No API calls
-
-Auto-resumes at 06:00
-
-🧠 How It Works (Internal Logic)
-
-Button uses falling-edge detection (PULL_UP → pressed = 0)
-
-Button is scanned every 0.1s for instant responsiveness
-
-Predictions refresh every ~5 seconds
-
-LCD is redrawn on each cycle
-
-Alert armed state persists during each 5-second cycle
-
-Night mode prevents unnecessary API calls and light
+- Button uses **falling-edge detection** (PULL_UP → pressed = `0`)
+- Button is scanned every **0.1 seconds** for fast responsiveness
+- Predictions refresh every **~5 seconds**
+- LCD is redrawn on every update cycle
+- Alert state persists during the 5-second prediction cycle
+- Night mode reduces network usage and turns off LCD light
