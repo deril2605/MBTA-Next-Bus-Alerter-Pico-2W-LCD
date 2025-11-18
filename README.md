@@ -43,6 +43,24 @@ Watch the Demo here
 | **USB cable / 5V power** | To power the Pico W |
 
 ---
+## Setup Images
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1bee2197-c70d-4bd8-a355-78eecb252403" width="45%">
+  <img src="https://github.com/user-attachments/assets/d2293007-f61f-4582-816b-fb2b2fa33fcd" width="45%">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/48ef297c-1630-44cf-8689-9b4eabf1e8c7" width="45%">
+  <img src="https://github.com/user-attachments/assets/04472e3d-b8b6-463e-8b6f-524b06023b74" width="45%">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/839d0c3d-5df5-436f-821d-382bbaede44f" width="45%">
+</p>
+
+
+---
 
 ## 🔌 Wiring
 
