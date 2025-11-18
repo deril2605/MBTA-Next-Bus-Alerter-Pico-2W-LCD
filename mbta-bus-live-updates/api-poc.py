@@ -5,7 +5,7 @@ from pprint import pprint
 # -------- MBTA CONFIG --------
 ROUTE_ID = "116"
 STOP_ID  = "5733"           # fill this in
-API_KEY  = "fd7a24507d4e45208098234176abc0b7"           # if you have one
+API_KEY  = ""           # if you have one
 
 # -------- MBTA ENDPOINT --------
 URL = (

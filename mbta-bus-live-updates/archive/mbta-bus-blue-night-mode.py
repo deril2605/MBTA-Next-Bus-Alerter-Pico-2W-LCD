@@ -20,7 +20,7 @@ BLUE_ROUTE_ID   = "Blue"
 BLUE_STOP_ID    = "place-aport"
 BLUE_DIR_ID     = "0"     # inbound for blue line (you set this)
 
-API_KEY = "fd7a24507d4e45208098234176abc0b7"
+API_KEY = ""
 
 # ------------ NIGHT MODE WINDOW ------------
 NIGHT_START = 23   # 11 PM
