@@ -1,5 +1,3 @@
-# DOESNT ACCOUNT FOR DST; ASSUMES BOSTON IS UTC-5 ALWAYS
-
 import network, time, json
 from machine import I2C, Pin
 from machine_i2c_lcd import I2cLcd   # IMPORTANT: Using your driver!
@@ -20,8 +18,8 @@ def sync_time():
 
 
 # ------------ WIFI ------------
-WIFI_SSID = ""
-WIFI_PW   = ""
+WIFI_SSID = "54EUTAW WIFI - 2.4Ghz"
+WIFI_PW   = "Guacamole2496"
 
 # ------------ MBTA CONFIG ------------
 BUS_ROUTE_ID    = "116"
@@ -33,7 +31,7 @@ BLUE_STOP_ID    = "place-aport"
 BLUE_DIR_ID     = "0"     # inbound for blue line
 BUS_MINS_THRESHOLD = 3
 
-API_KEY = ""
+API_KEY = "fd7a24507d4e45208098234176abc0b7"
 
 # ------------ LCD SETUP (I2C1 GP26/GP27) ------------
 i2c = I2C(1, sda=Pin(26), scl=Pin(27), freq=100_000)
@@ -84,14 +82,44 @@ def mv(c, r):
 def put(s):
     lcd.putstr(s)
 
-TZ_OFFSET_SECONDS = -5 * 3600   # Boston ≈ UTC-5 (ignoring DST)
+# ------------ TIMEZONE / DST (AUTO, CACHED) ------------
+_cached_offset = -5 * 3600   # default fallback until first computed
+_offset_last_checked = 0     # time.time() of last DST check
+OFFSET_RECHECK_SECS = 3600   # re-check once per hour
+
+def is_dst(y, m, d):
+    """US DST rule: 2nd Sunday in March through 1st Sunday in November."""
+    if m < 3 or m > 11:
+        return False
+    if 3 < m < 11:
+        return True
+    if m == 3:
+        first_day_wd = time.localtime(time.mktime((y, 3, 1, 0, 0, 0, 0, 0)))[6]  # 0=Mon..6=Sun
+        first_sunday = 1 + ((6 - first_day_wd) % 7)
+        second_sunday = first_sunday + 7
+        return d >= second_sunday
+    if m == 11:
+        first_day_wd = time.localtime(time.mktime((y, 11, 1, 0, 0, 0, 0, 0)))[6]
+        first_sunday = 1 + ((6 - first_day_wd) % 7)
+        return d < first_sunday
+    return False
+
+def get_tz_offset():
+    """Cached Boston UTC offset in seconds; recomputes at most once per hour."""
+    global _cached_offset, _offset_last_checked
+    now = time.time()
+    if now - _offset_last_checked >= OFFSET_RECHECK_SECS:
+        t = time.localtime(now)  # RTC is NTP-synced, so this is UTC
+        _cached_offset = -4 * 3600 if is_dst(t[0], t[1], t[2]) else -5 * 3600
+        _offset_last_checked = now
+    return _cached_offset
 
 def has_valid_time():
     return time.localtime()[0] >= 2024
 
 def local_hour():
     now_utc = time.time()
-    now_local = now_utc + TZ_OFFSET_SECONDS
+    now_local = now_utc + get_tz_offset()
     return time.localtime(now_local)[3]
 
 def in_night_mode():
@@ -118,7 +146,7 @@ def minutes_until(iso_str):
             return None  # RTC not valid yet → show "--"
 
         now_utc = time.time()
-        now_local = now_utc + TZ_OFFSET_SECONDS
+        now_local = now_utc + get_tz_offset()
 
         return int((target_local - now_local) / 60)
 
@@ -171,7 +199,7 @@ def update_status_line(alert_armed):
         put("Next bus alert ON")
     else:
         now_utc = time.time()
-        now_local = now_utc + TZ_OFFSET_SECONDS
+        now_local = now_utc + get_tz_offset()
         lt = time.localtime(now_local)
         put(f"Updated: {lt[3]:02d}:{lt[4]:02d}:{lt[5]:02d}  ")
 
@@ -289,4 +317,3 @@ def main():
 
 # run
 main()
-
