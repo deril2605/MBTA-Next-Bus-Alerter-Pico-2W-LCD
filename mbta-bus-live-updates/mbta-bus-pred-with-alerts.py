@@ -18,8 +18,8 @@ def sync_time():
 
 
 # ------------ WIFI ------------
-WIFI_SSID = "54EUTAW WIFI - 2.4Ghz"
-WIFI_PW   = "Guacamole2496"
+WIFI_SSID = ""
+WIFI_PW   = ""
 
 # ------------ MBTA CONFIG ------------
 BUS_ROUTE_ID    = "116"
